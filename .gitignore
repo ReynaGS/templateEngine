@@ -1,0 +1,8 @@
+.DS_Store/
+node_modules/
+misTest.js
+test/Engineer.test.txt
+test/Intern.test.txt
+test/Manager.test.txt
+Assets/
+package-lock.json
