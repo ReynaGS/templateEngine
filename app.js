@@ -11,7 +11,87 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 
+
 // Write code to use inquirer to gather information about the development team members,
+
+// Function to handle when to prompt next question 
+
+function teamPrompter(respuestas)
+{     
+    if(respuestas.question_one===true)
+            { 
+                return true
+                     
+            }
+    else 
+            {
+                return false
+
+            }
+}
+
+// function to add another member of a class  if user wants to
+
+
+
+
+var initialQuestions =[ 
+    { 
+        name: "select_role" , 
+        type: "list" , 
+        message: "What kind of employee would you like to add? ",
+        choices: ["Manager", "Engineer" , "Intern"]
+    }, 
+    {
+        name: "name_input", 
+        type:  "input" ,
+        message: "What is the employee's name?",      
+    },
+    {
+        name: "id_input", 
+        type:  "input" ,
+        message: "What is the employee's ID?",      
+    },
+     {
+        name: "email_input", 
+        type:  "input" ,
+        message: "What is the employee's email?",      
+    },
+    {
+        name: "ask_again",
+        type: "confirm", 
+        message: "Would you like to add another employee?"
+    }
+
+]; 
+
+ function questionMenu ()
+ {
+    inquirer.prompt(initialQuestions).then
+    (function(answers)
+        {
+            console.log(answers); 
+
+        if(answers.ask_again===true)
+        {
+          // create instance depending of type and save to array
+            questionMenu();
+        }
+        else
+        {
+            // create html from imput
+        }
+        }
+    
+    );
+ }
+ questionMenu(); 
+
+
+
+
+
+
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
