@@ -15,7 +15,7 @@ const { create } = require("domain");
 var employeeList = []; 
 
 // function to create instances of a class depending of employee
- function createEmployee (answers)
+function createEmployee (answers)
  {
     if(answers.select_role==="Manager")
     {
@@ -123,7 +123,7 @@ var initialQuestions =[
 
 ]; 
 // Write code to use inquirer to gather information about the development team members,
- function questionMenu ()
+function questionMenu ()
  {
     inquirer.prompt(initialQuestions).then
     (function(answers)
@@ -139,7 +139,10 @@ var initialQuestions =[
         else
         {
             // create html from imput
-            console.log(employeeList); 
+            console.log(employeeList);
+            var rendering = render(employeeList); 
+            fs.writeFileSync(outputPath,rendering); 
+
         }
         }
     
