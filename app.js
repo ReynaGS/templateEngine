@@ -9,54 +9,112 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { create } = require("domain");
 
 
+var employeeList = []; 
 
-// Write code to use inquirer to gather information about the development team members,
+// function to create instances of a class depending of employee
+ function createEmployee (answers)
+ {
+    if(answers.select_role==="Manager")
+    {
+        var newManager = new Manager(answers.name,answers.id, answers.email, answers.officeNumber)
+        employeeList.push(newManager);
+    }
+    else if(answers.select_role==="Engineer")
+    {
+        var newEngineer = new Engineer(answers.name,answers.id, answers.email,answers.github)
+        employeeList.push(newEngineer);
+    }
+    else if(answers.select_role==="Intern")
+    {
+        var newIntern = new Intern(answers.name,answers.id, answers.email, answers.school)
+        employeeList.push(newIntern);
 
-// Function to handle when to prompt next question 
+    }
+    
+ }
+//Functions to know what question to ask if it is a manager, engineer or intern. 
+function isManager(answers)
+{ if(answers.select_role==="Manager")
+    {
+        return true
+    }
+  else
+    {   return false
+    
+    }
 
-function teamPrompter(respuestas)
-{     
-    if(respuestas.question_one===true)
-            { 
-                return true
-                     
-            }
-    else 
-            {
-                return false
+};
+function isEngineer(answers)
+{ if(answers.select_role==="Engineer")
+    {
+        return true
+    }
+  else
+    {   return false
+    
+    }
 
-            }
-}
+};
 
-// function to add another member of a class  if user wants to
+function isIntern(answers)
+{ if(answers.select_role==="Intern")
+    {
+        return true
+    }
+  else
+    {   return false
+    
+    }
 
+};
+//---------------------------------------------
 
-
+// Array of objects with questions for inquierer. 
 
 var initialQuestions =[ 
     { 
         name: "select_role" , 
         type: "list" , 
         message: "What kind of employee would you like to add? ",
-        choices: ["Manager", "Engineer" , "Intern"]
+        choices: ["Manager", "Engineer" , "Intern"],
     }, 
     {
-        name: "name_input", 
+        name: "name", 
         type:  "input" ,
         message: "What is the employee's name?",      
     },
     {
-        name: "id_input", 
+        name: "id", 
         type:  "input" ,
         message: "What is the employee's ID?",      
     },
      {
-        name: "email_input", 
+        name: "email", 
         type:  "input" ,
         message: "What is the employee's email?",      
     },
+    {
+        name: "officeNumber", 
+        type:  "input" ,
+        message: "What is the Manager's office number?", 
+        when: isManager,    
+    },
+    {
+        name: "github", 
+        type:  "input" ,
+        message: "What is the Engineer's gitHub username?", 
+        when: isEngineer,    
+    },
+    {
+        name: "school", 
+        type:  "input" ,
+        message: "What school does the intern goes to ?", 
+        when: isIntern,    
+    },
+
     {
         name: "ask_again",
         type: "confirm", 
@@ -64,13 +122,14 @@ var initialQuestions =[
     }
 
 ]; 
-
+// Write code to use inquirer to gather information about the development team members,
  function questionMenu ()
  {
     inquirer.prompt(initialQuestions).then
     (function(answers)
         {
             console.log(answers); 
+             createEmployee(answers);
 
         if(answers.ask_again===true)
         {
@@ -80,12 +139,14 @@ var initialQuestions =[
         else
         {
             // create html from imput
+            console.log(employeeList); 
         }
         }
     
     );
  }
  questionMenu(); 
+ 
 
 
 
